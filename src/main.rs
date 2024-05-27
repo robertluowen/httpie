@@ -4,6 +4,10 @@ use colored::*;
 use mime::Mime;
 use reqwest::{header, Client, Response, Url};
 use std::{collections::HashMap, str::FromStr};
+// use syntect::easy::HighlightLines;
+// use syntect::highlighting::{Style, ThemeSet};
+// use syntect::parsing::SyntaxSet;
+// use syntect::util::{as_24_bit_terminal_escaped, LinesWithEndings};
 #[derive(Parser, Debug)]
 #[clap(
     name = "httpie",
@@ -101,11 +105,26 @@ fn print_status(resp: &Response) {
 // 打印服务器返回的 HTTP header
 fn print_headers(resp: &Response) {
     for (name, value) in resp.headers() {
+        // print_highlighting(name.to_string());
+
         println!("{}: {:?}", name.to_string().green(), value);
     }
 
     print!("\n");
 }
+
+// fn print_highlighting(s: String) {
+//     let ps = SyntaxSet::load_defaults_newlines();
+//     let ts = ThemeSet::load_defaults();
+
+//     let syntax = ps.find_syntax_by_extension("rs").unwrap();
+//     let mut h = HighlightLines::new(syntax, &ts.themes["base16-ocean.dark"]);
+//     for line in LinesWithEndings::from(&s) {
+//         let ranges: Vec<(Style, &str)> = h.highlight_line(line, &ps).unwrap();
+//         let escaped = as_24_bit_terminal_escaped(&ranges[..], true);
+//         print!("{:?}", escaped);
+//     }
+// }
 
 /// 打印服务器返回的 HTTP body
 fn print_body(m: Option<Mime>, body: &String) {

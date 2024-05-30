@@ -35,7 +35,7 @@ struct GetOpts {
     /// HTTP 请求的 URL  
     #[clap(required = true)]
     #[arg(value_parser = parse_url)]
-    url: String,
+    url: Url,
 }
 
 #[derive(Parser, Debug)]
@@ -83,7 +83,7 @@ fn parse_kv_pair(s: &str) -> Result<KvPair> {
 }
 
 async fn get(client: Client, args: &GetOpts) -> Result<()> {
-    let resp = client.get(&args.url).send().await?;
+    let resp = client.get(args.url.as_str()).send().await?;
     Ok(print_resp(resp).await?)
 }
 
